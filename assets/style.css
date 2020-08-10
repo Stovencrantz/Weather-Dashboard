@@ -1,0 +1,23 @@
+header{
+    height: 5em;
+    max-height: 5em;
+    background-color: lightblue;
+    border-radius: 10px;
+    margin-bottom: 2em;
+}
+.weatherDash{
+    font-size: 3em;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-style: oblique;
+}
+
+.container{
+    border-style: solid;
+    border-color: teal;
+    border-radius: 10px;
+    min-width: 90%;
+}
+
+.currentDateDiv-1{
+    font-size: small;
+}
