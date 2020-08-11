@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./assets/style.css">
 <title>Weather Dashbaord</title>
 </head>
-<body>
+<body style = "background-image: url(./assets/weatherBackground.jpg);">
     <header class = "text-center">
         <p class = "weatherDash">WEATHER DASHBOARD</p>
     </header>
@@ -37,11 +37,11 @@
                 <div class="row">
                     <!-- past searches data -->
                     <div class="col-md-12" id = "pastSearchesBlock"></div>
-                        <ul class = "pastSearches bg-success">
-                            <li>some text</li>
-                            <li>some text</li>
-                            <li>some text</li>
-                        </ul>
+                        <table class = "table pastSearches bg-success">
+                            <tbody>
+
+                            </tbody>
+                        </table>
                 </div>
             </div>
 
@@ -51,11 +51,11 @@
                 <div class="row">
                     <div class="col-md-12" id ="fiveDayBlock">  
                     <!-- card body for the next 5 days -->
-                         <div class="card card-body bg-success" id = "fiveDayForecast">
+                         <div class="card-md card-body" id = "fiveDayForecast">
                              <h2 class = "text-center">Five Day Forecast:</h2>
                             <div class="row">
                                 <!-- First Day -->
-                                <div class="col col-sm-offset-1 bg-primary text-center">
+                                <div class="col col-sm-offset-1 text-center">
                                     <div class="card card-body day_1">
                                         <div class = "text-center"> <span id="currentDateDiv-1"></span></div>
                                         <div id="icon-1"><img id="fiveDayWicon-1" src="" alt="Weather icon"></div>
@@ -64,7 +64,7 @@
                                     </div>
                                 </div>
                                 <!-- Second Day -->
-                                <div class="col bg-secondary text-center">
+                                <div class="col-lg text-center">
                                     <div class="card card-body day_2">
                                         <div class = "text-center"><span id="currentDateDiv-2"></span></div>
                                         <div id="icon-1"><img id="fiveDayWicon-2" src="" alt="Weather icon"></div>
@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                                 <!-- Third Day -->
-                                <div class="col bg-success text-center">                                   
+                                <div class="col-lg text-center">                                   
                                     <div class="card card-body day_3">
                                         <div class = "text-center"><span id="currentDateDiv-3"></span></div>
                                         <div id="icon-1"><img id="fiveDayWicon-3" src="" alt="Weather icon"></div>
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 <!-- Fourth Day -->
-                                <div class="col bg-danger text-center">                                    
+                                <div class="col-lg text-center">                                    
                                     <div class="card card-body day_4">
                                         <div class = "text-center"><span id="currentDateDiv-4"></span></div>
                                         <div id="icon-1"><img id="fiveDayWicon-4" src="" alt="Weather icon"></div>
@@ -91,7 +91,7 @@
                                     </div>
                                 </div>
                                 <!-- Fifth Day -->
-                                <div class="col bg-info text-center">                                    
+                                <div class="col-lg text-center">                                    
                                     <div class="card card-body day_5">
                                         <div class = "text-center"><span id="currentDateDiv-5"></span></div>
                                         <div id="icon-1"><img id="fiveDayWicon-5" src="" alt="Weather icon"></div>
@@ -107,7 +107,7 @@
                 <!-- Current date weather card here -->
                 <div class="row">
                     <div class="col-md-12" id = "currentDayBlock"></div>
-                        <div class="card card-body bg-success" id ="currentForecast">
+                        <div class="card card-body" id ="currentForecast">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="locationDiv"></div>
