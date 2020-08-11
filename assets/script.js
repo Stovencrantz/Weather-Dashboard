@@ -2,7 +2,9 @@ $(document).ready(function(){
 //school key
 // var API_KEY = "8988ce4587b71b5353869d036e2f9471"; 
 var API_KEY = "8988ce4587b71b5353869d036e2f9471";
-
+var state = "";
+var city = "";
+ var stateCode = "";
 //Converts our temp value (in K) from our API, and converts it (to F) for our page
 function KtoF(kelvin){
     var temp = Math.round((kelvin-273.15)*(9/5)+32);
@@ -24,18 +26,34 @@ function timeConverter(UNIX_timestamp){
     return time;
   }
   
+//push info to local drive
+
+
+
+//pull info from local to populate page on init
+function storeLastCurrent(city, stateCode){
+    //Create an object to hold our major values and store in local storage
+    var locationData = {
+        city: city,
+        state: stateCode,
+    }
+    localStorage.setItem("lastLocation", JSON.stringify(locationData));
+    
+}
 
 //function for populating todays weather
-function todayWeather(){
+function todayWeather(city, stateCode){
+    
     //grab user input
-    var city = $("#citySearch").val().toLowerCase()
-    var state = $("#stateSearch").val().toUpperCase();
-    state = "US-" + state;
-    var location = city + " " + state;
+    city = $("#citySearch").val().toLowerCase()
+    state = $("#stateSearch").val().toUpperCase();
+    stateCode =  "US-" + state;
+    storeLastCurrent(city, stateCode);
     console.log("---------------------------------------------------------------");
-    console.log(location);
+    console.log(state);
 
-    var weatherDataURL = "http://api.openweathermap.org/data/2.5/weather?q="+ city + "," + state +"&appid=" + API_KEY;
+
+    var weatherDataURL = "http://api.openweathermap.org/data/2.5/weather?q="+ city + "," + stateCode +"&appid=" + API_KEY;
     console.log(weatherDataURL);
     $.ajax({
         url: weatherDataURL,
@@ -44,10 +62,9 @@ function todayWeather(){
         console.log(response);
 
         //grab our search location
-        state = state.split("-");
-        var location = $(".locationDiv").append(city.toUpperCase(),", ", state[1]);
+        var locationEl = $(".locationDiv").text(city.toUpperCase() + ", " + state);
 
-        $(".currentDateDiv").text(timeConverter(response.dt));
+        var dayDate = $(".currentDateDiv").text(timeConverter(response.dt));
 
         //grab the elements that will store our weather data
         var tempVal = KtoF(response.main.temp);
@@ -55,14 +72,14 @@ function todayWeather(){
 
 
         var humidityValEl = $(".humidityVal").text(response.main.humidity + "%");
-        var windSpeedValEl = $(".windSpeedVal").text(response.wind.speed);
+        var windSpeedValEl = $(".windSpeedVal").text(response.wind.speed+"mph");
         //create the src link to display the icon code as an image
         var iconCode = response.weather[0].icon;
         var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
         //append the icon link to the src attribute of our icon element in html
-        $("#todayWicon").attr('src', iconURL);
+        var dailyIcon = $("#todayWicon").attr('src', iconURL);
 
-        //append temp value to our temp element
+    
 
         //creating a url link that will give us uvIndex data when we parse lat and lon
         var uvIndexURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+ API_KEY + "&lat="+response.coord.lat+"&lon=" + response.coord.lon;
@@ -72,8 +89,8 @@ function todayWeather(){
             method: "GET"
         }).then(function(response){
             console.log(response);
-            var uvIndexVal = response.value;
-            var uvIndexColor = "";
+            uvIndexVal = response.value;
+            uvIndexColor = "";
             //UV index color scales:
             //8-10+ = red for very high
             if(uvIndexVal >= 8){
@@ -92,17 +109,18 @@ function todayWeather(){
                 uvIndexColor = "green";
             }
 
-            var uvIndexValEl = $(".uvIndexVal").css("background-color",uvIndexColor).text(response.value);
+            var uvIndexValEl = $(".uvIndexVal").css("background-color",uvIndexColor).text(uvIndexVal);
         })
     })
 }
 
 //This function populates our weather for the future five days
 function fiveDayWeather(){
-    var city = $("#citySearch").val().toLowerCase()
-    var state = $("#stateSearch").val().toUpperCase();
-    state = "US-" + state;
-    var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+ city +","+ state +"&appid="+ API_KEY;
+    
+    city = $("#citySearch").val().toLowerCase()
+    state = $("#stateSearch").val().toUpperCase();
+    stateCode = "US-" + state;
+    var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+ city +","+ stateCode +"&appid="+ API_KEY;
     console.log(queryURL);
     $.ajax({
         url: queryURL,
@@ -141,7 +159,13 @@ function fiveDayWeather(){
     })
 
 }
+ 
 
+function renderLastCurrent(){
+    var city = JSON.parse(localStorage.getitem("city"));
+    var stateCode = JSON.parse(localStorage.getItem("stateCode"));
+    
+}
 $("#searchBtn").on("click", function(){
     event.preventDefault();
     todayWeather();
