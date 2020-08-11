@@ -3,10 +3,27 @@ $(document).ready(function(){
 // var API_KEY = "8988ce4587b71b5353869d036e2f9471"; 
 var API_KEY = "8988ce4587b71b5353869d036e2f9471";
 
+//Converts our temp value (in K) from our API, and converts it (to F) for our page
 function KtoF(kelvin){
     var temp = Math.round((kelvin-273.15)*(9/5)+32);
     return temp; 
 }
+
+//Creates 
+function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year; 
+    // console.log("Todaysdate is: " + time);
+    return time;
+  }
+  
 
 //function for populating todays weather
 function todayWeather(){
@@ -24,25 +41,31 @@ function todayWeather(){
         url: weatherDataURL,
         method: "GET"
     }).then(function(response){
+        console.log(response);
+
+        //grab our search location
+        state = state.split("-");
+        var location = $(".locationDiv").append(city.toUpperCase(),", ", state[1]);
+
+        $(".currentDateDiv").text(timeConverter(response.dt));
 
         //grab the elements that will store our weather data
-        var tempValEl = $(".tempVal").text(response.main.temp);
-        var humidityValEl = $(".humidityVal").text(response.main.humidity);
+        var tempVal = KtoF(response.main.temp);
+        var dayTempEl = $(".tempVal").text(" " + tempVal + "°F");
+
+
+        var humidityValEl = $(".humidityVal").text(response.main.humidity + "%");
         var windSpeedValEl = $(".windSpeedVal").text(response.wind.speed);
         //create the src link to display the icon code as an image
         var iconCode = response.weather[0].icon;
         var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
-        console.log(iconURL);
         //append the icon link to the src attribute of our icon element in html
         $("#todayWicon").attr('src', iconURL);
 
         //append temp value to our temp element
 
-        console.log("lat: " + response.coord.lat);
-        console.log("lon: " + response.coord.lon);
         //creating a url link that will give us uvIndex data when we parse lat and lon
-        var uvIndexURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+ API_KEY + "&lat="+response.coord.lat+"&lon=" + response.coord.lat;
-        console.log(uvIndexURL);
+        var uvIndexURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+ API_KEY + "&lat="+response.coord.lat+"&lon=" + response.coord.lon;
         //Ajax call to the portion of openweathermap API 
         $.ajax({
             url: uvIndexURL,
@@ -86,16 +109,6 @@ function fiveDayWeather(){
         method: "GET"
     }).then(function(response){
         console.log(response);
-        //day one
-        // var dayDate_1 = (response.list[0].dt_txt).split(" ");
-        // dayDate_1 = dayDate_1[0];
-        // console.log(dayDate_1);
-        // var dayOneDateEl = $("#currentDateDiv-1").append(dayDate_1);
-        // var iconCode = response.list[0].weather[0].icon;
-        // var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
-        // var icon1 = $("#fiveDayWicon1").attr("src", iconURL);
-        // var dayOneTemp = $("#tempDiv-1").text(" " + response.list[0].main.temp);
-        // var dayOneHumidity = $("#humidityDiv-1").text(" " + response.list[0].main.humidity + "%");
 
         //fill a day card with infromation, then move to the next card and populate that
         var numDays = 6;
@@ -104,11 +117,8 @@ function fiveDayWeather(){
         var index = 4;
         for (var i = 1; i < numDays; i++){
             //dynamic date
-            var dayDate = (response.list[index].dt_txt).split(" ");
-            dayDate = dayDate[0];
-            console.log("Day "+ i + ": " + dayDate);
             var dateVar = "#currentDateDiv-" + i;
-            var dayDateEl = $(dateVar).text(dayDate);
+            var dayDateEl = $(dateVar).text(timeConverter(response.list[index].dt));
 
             //dynamic icon
             var iconVar = "#fiveDayWicon-" + i;
@@ -118,9 +128,7 @@ function fiveDayWeather(){
 
             //dynamimc temp
             var tempVar = "#tempDiv-" + i;
-            console.log("kelvin: " + response.list[index].main.temp);
             var tempVal = KtoF(response.list[index].main.temp);
-            console.log("Fahrenheit: " + tempVal);
             var dayTempEl = $(tempVar).text(" " + tempVal + "°F");
 
             //dynamic humidity
