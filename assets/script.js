@@ -2,9 +2,7 @@ $(document).ready(function(){
     //school key
     // var API_KEY = "8988ce4587b71b5353869d036e2f9471"; 
     var API_KEY = "8988ce4587b71b5353869d036e2f9471";
-    var state = "";
-    var city = "";
-     var stateCode = "";
+    
     //Converts our temp value (in K) from our API, and converts it (to F) for our page
     function KtoF(kelvin){
         var temp = Math.round((kelvin-273.15)*(9/5)+32);
@@ -26,32 +24,41 @@ $(document).ready(function(){
         return time;
       }
       
-    //push info to local drive
-    
-    
-    
-    //pull info from local to populate page on init
-    function storeLastCurrent(city, stateCode){
-        //Create an object to hold our major values and store in local storage
+    //get location from user
+    function storeLocation(){
+        var city = $("#citySearch").val().toLowerCase()
+        var state = $("#stateSearch").val().toUpperCase();
+        var stateCode =  "US-" + state;
+
         var locationData = {
             city: city,
-            state: stateCode,
+            state: state,
+            stateCode: stateCode
         }
         localStorage.setItem("lastLocation", JSON.stringify(locationData));
-        
+        console.log("---------------------------------------------------------------");
+ 
+    }
+
+    function renderWeather(){
+        var location = JSON.parse(localStorage.getItem("lastLocation"));
+        var city = location.city;
+        var state = location.state;
+        var stateCode = location.stateCode;
+        console.log("City: " + city);
+        console.log("State: " + state);
+        console.log("StateCode: " + stateCode);
+        todayWeather(city, state, stateCode)
+        fiveDayWeather(city, state, stateCode)
     }
     
+    
     //function for populating todays weather
-    function todayWeather(city, stateCode){
+    function todayWeather(city, state, stateCode){
         
-        //grab user input
-        city = $("#citySearch").val().toLowerCase()
-        state = $("#stateSearch").val().toUpperCase();
-        stateCode =  "US-" + state;
-        storeLastCurrent(city, stateCode);
         console.log("---------------------------------------------------------------");
         console.log(state);
-    
+        
     
         var weatherDataURL = "http://api.openweathermap.org/data/2.5/weather?q="+ city + "," + stateCode +"&appid=" + API_KEY;
         console.log(weatherDataURL);
@@ -115,11 +122,8 @@ $(document).ready(function(){
     }
     
     //This function populates our weather for the future five days
-    function fiveDayWeather(){
+    function fiveDayWeather(city, state, stateCode){
         
-        city = $("#citySearch").val().toLowerCase()
-        state = $("#stateSearch").val().toUpperCase();
-        stateCode = "US-" + state;
         var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+ city +","+ stateCode +"&appid="+ API_KEY;
         console.log(queryURL);
         $.ajax({
@@ -161,18 +165,26 @@ $(document).ready(function(){
     }
      
     
-    function renderLastCurrent(){
-        var city = JSON.parse(localStorage.getitem("city"));
-        var stateCode = JSON.parse(localStorage.getItem("stateCode"));
+    if (JSON.parse(localStorage.getItem("lastLocation")) === null){
+        $("#searchBtn").on("click", function(){
+            event.preventDefault();
+            // todayWeather();
+            // fiveDayWeather();
+            storeLocation();
+            renderWeather();
         
+        
+        })
     }
-    $("#searchBtn").on("click", function(){
-        event.preventDefault();
-        todayWeather();
-        fiveDayWeather();
+    else{
+    renderWeather();
+
+    }
+    //Render the weather if data is stored in local storage
     
-    
-    })
+
+    //Take users input and submit store it, and use that search to search for weather
+
     
     
     
