@@ -60,7 +60,7 @@ $(document).ready(function(){
         console.log(state);
         
     
-        var weatherDataURL = "http://api.openweathermap.org/data/2.5/weather?q="+ city + "," + stateCode +"&appid=" + API_KEY;
+        var weatherDataURL = "https://api.openweathermap.org/data/2.5/weather?q="+ city + "," + stateCode +"&appid=" + API_KEY;
         console.log(weatherDataURL);
         $.ajax({
             url: weatherDataURL,
@@ -82,14 +82,14 @@ $(document).ready(function(){
             var windSpeedValEl = $(".windSpeedVal").text(response.wind.speed+"mph");
             //create the src link to display the icon code as an image
             var iconCode = response.weather[0].icon;
-            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+            var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
             //append the icon link to the src attribute of our icon element in html
             var dailyIcon = $("#todayWicon").attr('src', iconURL);
     
         
     
             //creating a url link that will give us uvIndex data when we parse lat and lon
-            var uvIndexURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+ API_KEY + "&lat="+response.coord.lat+"&lon=" + response.coord.lon;
+            var uvIndexURL = "https://api.openweathermap.org/data/2.5/uvi?appid="+ API_KEY + "&lat="+response.coord.lat+"&lon=" + response.coord.lon;
             //Ajax call to the portion of openweathermap API 
             $.ajax({
                 url: uvIndexURL,
@@ -124,7 +124,7 @@ $(document).ready(function(){
     //This function populates our weather for the future five days
     function fiveDayWeather(city, state, stateCode){
         
-        var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q="+ city +","+ stateCode +"&appid="+ API_KEY;
+        var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="+ city +","+ stateCode +"&appid="+ API_KEY;
         console.log(queryURL);
         $.ajax({
             url: queryURL,
@@ -145,7 +145,7 @@ $(document).ready(function(){
                 //dynamic icon
                 var iconVar = "#fiveDayWicon-" + i;
                 var iconCode = response.list[index].weather[0].icon;
-                var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
                 var iconEl = $(iconVar).attr("src", iconURL);
     
                 //dynamimc temp

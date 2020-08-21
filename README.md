@@ -1,23 +1,38 @@
+
 # Weather-Dashboard
+![License](https://img.shields.io/badge/License--blue.svg "License Badge")
 
-## User Story 
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
+## Description:
+    Generates an html page that displays data for the current day and next 5 day weather forecast. The user enters a city and a state in the search bar and when they press the submit button it will update the site to display weather data for that location. This application utilizes local storage so the site will retain information from the users most recent search and will display it the next time the user opens the application.
 
-## Acceptance Criteria
+# Table of Contents
 
-```
-GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-WHEN I view the UV index
-THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
-WHEN I open the weather dashboard
-THEN I am presented with the last searched city forecast
+- [Description](#description)
+- [Installation](#installation)
+- [Usage](#usage) 
+- [Contributing](#contributing)
+- [Test](#test)
+- [Credits](#credits)
+- [License](#license) 
+- [Questions](#questions)
+
+## Installation:
+    Working internet connection.
+## Usage:
+    Enter a city and a state into the search bar.
+## Contributing:
+    Steven Knapp
+## Test:
+    No current test params. TO be added at a later date.
+## Credits:
+    Steven Knapp
+## License:
+    For more information about the License, click on the link below.
+    
+- [License](https://opensource.org/licenses/)
+## Questions:
+    Please contact me about this program using the following link: 
+- [GitHub Profile](https://github.com/Stovencrantz)
+For additional questions please reach out to my email at: sknapp143@gmail.com.
+    Here is a video on how to work the application.
+- [Video](https://drive.google.com/file/d/1S7Ghxkw8DkgHQ8dZb39vRoqImev4Hydz/view)
